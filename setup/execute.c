@@ -360,6 +360,7 @@ int ExecuteDoom(execute_context_t *context)
     return result;
 }
 
+#ifndef LAUNCHER
 static void TestCallback(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(data))
 {
     execute_context_t *exec;
@@ -411,6 +412,7 @@ txt_window_action_t *TestConfigAction(void)
 
     return test_action;
 }
+#endif
 
 // Invokes Doom to find which IWADs are installed.
 // This is a cheap hack to avoid duplication of the complicated install

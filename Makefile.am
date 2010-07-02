@@ -49,7 +49,7 @@ EXTRA_DIST=                             \
 MAINTAINERCLEANFILES =  $(AUX_DIST_GEN)
 
 docdir=$(prefix)/share/doc/@PACKAGE@
-SUBDIRS=wince textscreen pcsound src man setup
+SUBDIRS=wince textscreen pcsound src man setup launcher
 DIST_SUBDIRS=pkg $(SUBDIRS)
 
 if HAVE_PYTHON

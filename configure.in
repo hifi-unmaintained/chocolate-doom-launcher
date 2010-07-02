@@ -136,6 +136,8 @@ pkg/osx/Info.plist
 pkg/osx/Info-gnustep.plist
 setup/Makefile
 setup/setup-res.rc
+launcher/Makefile
+launcher/launcher-res.rc
 src/Makefile
 src/doom-screensaver.desktop
 src/resource.rc
