@@ -7,10 +7,14 @@ typedef struct
     int skill;
     int map;
 
-    /* flags */
-    int no_monsters;
-    int fast_monsters;
-    int respawn_monsters;
+    /* monster flags */
+    int nomonsters;
+    int fast;
+    int respawn;
+
+    /* dm options */
+    int deathmatch;
+    int timer;
 } launcher_t;
 
 typedef struct

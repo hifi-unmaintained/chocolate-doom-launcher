@@ -142,7 +142,7 @@ char **L_IWADs()
 
     // Find out what WADs are installed
     
-    installed_iwads = 63; //FindInstalledIWADs();
+    installed_iwads = FindInstalledIWADs();
 
     // Build a list of the descriptions for all installed IWADs
 
@@ -178,7 +178,7 @@ map_t **L_Maps(int iwad_idx)
     switch(GetIWADForDescription(found_iwads[iwad_idx])->mask) {
         case IWAD_DOOM:
             maps = malloc(sizeof(map_t*) * arrlen(doom_wad_maps));
-            for(i=0;i<arrlen(doom_wad_maps);i++)
+            for(i=1;i<arrlen(doom_wad_maps);i++)
             {
                 maps[i] = &doom_wad_maps[i];
             }
@@ -209,33 +209,74 @@ char *MapToWarp(int map)
     return doom_wad_maps[map].warp;
 }
 
+static void AddIWADParameter(execute_context_t *exec)
+{
+    AddCmdLineParameter(exec, "-iwad %s", GetCurrentIWAD()->filename);
+}
+
 void L_Execute(launcher_t *data)
 {
-    char buf[512];
+    execute_context_t *exec;
 
     found_iwad_selected = data->iwad;
 
-    /*
-    printf("launch options:\n iwad: %s\n skill: %d\n map: %s\n no_monsters: %d\n fast_monsters: %d\n respawn_monsters: %d\n",
-            GetCurrentIWAD()->filename,
-            data->skill + 1,
-            MapToWarp(data->map),
-            data->no_monsters,
-            data->fast_monsters,
-            data->respawn_monsters
-        );
-    */
+    exec = NewExecuteContext();
 
-    snprintf(buf, 512, "chocolate-doom -iwad %s -warp %s -skill %d %s%s%s",
-                GetCurrentIWAD()->filename,
-                MapToWarp(data->map),
-                data->skill + 1,
-                (data->no_monsters ? "-nomonsters " : ""),
-                (data->fast_monsters ? "-fast " : ""),
-                (data->respawn_monsters ? "-respawn " : "")
-        );
+    // Extra parameters come first, before all others; this way,
+    // they can override any of the options set in the dialog.
 
-    printf("\n%s\n\n",buf);
+    //AddExtraParameters(exec);
 
-    system(buf);
+    AddIWADParameter(exec);
+    //AddCmdLineParameter(exec, "-server");
+
+    if(data->skill > 0)
+    {
+        AddCmdLineParameter(exec, "-skill %i", data->skill);
+    }
+
+    if (data->nomonsters)
+    {
+        AddCmdLineParameter(exec, "-nomonsters");
+    }
+
+    if (data->fast)
+    {
+        AddCmdLineParameter(exec, "-fast");
+    }
+
+    if (data->respawn)
+    {
+        AddCmdLineParameter(exec, "-respawn");
+    }
+
+    if (data->deathmatch == 1)
+    {
+        AddCmdLineParameter(exec, "-deathmatch");
+    }
+    else if (data->deathmatch == 2)
+    {
+        AddCmdLineParameter(exec, "-altdeath");
+    }
+
+    if (data->timer > 0)
+    {
+        AddCmdLineParameter(exec, "-timer %i", data->timer);
+    }
+
+    if (data->map > 0)
+    {
+        AddCmdLineParameter(exec, "-warp %s", MapToWarp(data->map - 1));
+    }
+
+    //AddCmdLineParameter(exec, "-port %i", udpport);
+
+    //AddWADs(exec);
+
+    //M_SaveDefaults();
+    AddConfigParameters(exec);
+
+    ExecuteDoom(exec);
+
+    exit(0);
 }
