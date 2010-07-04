@@ -87,7 +87,9 @@ gint iwad_changed(GtkComboBox *widget, gpointer ptr)
     int iwad_idx = (int)gtk_combo_box_get_active(widget);
 
     // populate skill list
+    int selected_skill = COMBO_STATUS("skill_level_select");
     UpdateList(L_Skills(iwad_idx), "skill_level_list", true);
+    gtk_combo_box_set_active(GTK_COMBO_BOX(gtk_builder_get_object(builder, "skill_level_select")), selected_skill);
 
     // populate map list 
     UpdateMapList(L_Maps(iwad_idx), "level_list");
