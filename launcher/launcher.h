@@ -19,22 +19,16 @@ typedef struct
 
 typedef struct
 {
+    char *warp;
+    char *name;
+} map_t;
+
+typedef struct
+{
     char *filename;
     char *description;
     int mask;
 } iwad_t;
-
-typedef enum
-{
-    WARP_DOOM1,
-    WARP_DOOM2,
-} warptype_t;
-
-typedef struct
-{
-    char *warp;
-    char *name;
-} map_t;
 
 char** L_Skills();
 char** L_IWADs();

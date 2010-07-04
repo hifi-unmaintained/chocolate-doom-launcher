@@ -34,19 +34,9 @@
 #include "launcher.h"
 #include "execute.h"
 
-static iwad_t iwads[] = 
-{
-    { "doom.wad",     "Doom",                                IWAD_DOOM },
-    { "doom2.wad",    "Doom 2",                              IWAD_DOOM2 },
-    { "tnt.wad",      "Final Doom: TNT: Evilution",          IWAD_TNT },
-    { "plutonia.wad", "Final Doom: The Plutonia Experiment", IWAD_PLUTONIA },
-    { "doom1.wad",    "Doom shareware",                      IWAD_DOOM1 },
-    { "chex.wad",     "Chex Quest",                          IWAD_CHEX },
-};
-
 static map_t doom1_wad_maps[] =
 {
-    { "1 1", "E1M1: Hanger" },
+    { "1 1", "E1M1: Hangar" },
     { "1 2", "E1M2: Nuclear Plant" },
     { "1 3", "E1M3: Toxin Refinery" },
     { "1 4", "E1M4: Command Control" },
@@ -60,7 +50,7 @@ static map_t doom1_wad_maps[] =
 
 static map_t doom_wad_maps[] =
 {
-    { "1 1", "E1M1: Hanger" },
+    { "1 1", "E1M1: Hangar" },
     { "1 2", "E1M2: Nuclear Plant" },
     { "1 3", "E1M3: Toxin Refinery" },
     { "1 4", "E1M4: Command Control" },
@@ -72,14 +62,95 @@ static map_t doom_wad_maps[] =
     { "2 1", "E2M1: Deimos Anomaly", },
     { "2 2", "E2M2: Containment Area", },
     { "2 3", "E2M3: Refinery", },
+    { "2 4", "E2M4: Deimos Lab", },
+    { "2 5", "E2M5: Command Center", },
+    { "2 6", "E2M6: Halls of the Damned", },
+    { "2 7", "E2M7: Spawning Vats", },
+    { "2 8", "E2M8: Tower of Babel", },
+    { "2 9", "E2M9: Fortress of Mystery", },
+    { "3 1", "E3M1: Hell Keep", },
+    { "3 2", "E3M2: Slough of Despair", },
+    { "3 3", "E3M3: Pandemonium", },
+    { "3 4", "E3M4: House of Pain", },
+    { "3 5", "E3M5: Unholy Cathedral", },
+    { "3 6", "E3M6: Mt. Erebus", },
+    { "3 7", "E3M7: Limbo", },
+    { "3 8", "E3M8: Dis", },
+    { "3 9", "E3M9: Warrens", },
+    { "4 1", "E4M1: Hell Beneath", },
+    { "4 2", "E4M2: Perfect Hatred", },
+    { "4 3", "E4M3: Sever the Wicked", },
+    { "4 4", "E4M4: Unruly Evil", },
+    { "4 5", "E4M5: They Will Repent", },
+    { "4 6", "E4M6: Against Thee Wickedly", },
+    { "4 7", "E4M7: And Hell Followed", },
+    { "4 8", "E4M8: Unto the Cruel", },
+    { "4 8", "E4M9: Fear", },
     { NULL, NULL }
 };
 
 static map_t doom2_wad_maps[] =
 {
     { "01", "Level 1: Entryway" },
+    { "02", "Level 2: Underhalls" },
+    { "03", "Level 3: The Gantlet" },
+    { "04", "Level 4: The Focus" },
+    { "05", "Level 5: The Waste Tunnels" },
+    { "06", "Level 6: The Crusher" },
+    { "07", "Level 7: Dead Simple" },
+    { "08", "Level 8: Tricks and Traps" },
+    { "09", "Level 9: The Pit" },
+    { "10", "Level 10: Refueling Base" },
+    { "11", "Level 11: 'O' of Destruction!" },
+    { "12", "Level 12: The Factory" },
+    { "13", "Level 13: Downtown" },
+    { "14", "Level 14: The Inmost Dens" },
+    { "15", "Level 15: Industrial Zone" },
+    { "16", "Level 16: Suburbs" },
+    { "17", "Level 17: Tenements" },
+    { "18", "Level 18: The Courtyard" },
+    { "19", "Level 19: The Citadel" },
+    { "20", "Level 20: Gotcha!" },
+    { "21", "Level 21: Nirvana" },
+    { "22", "Level 22: The Catacombs" },
+    { "23", "Level 23: Barrels o' Fun" },
+    { "24", "Level 24: The Chasm" },
+    { "25", "Level 25: Bloodfalls" },
+    { "26", "Level 26: The Abandoned Mines" },
+    { "27", "Level 27: Monster Condo" },
+    { "28", "Level 28: The Spirit World" },
+    { "29", "Level 29: The Living End" },
+    { "30", "Level 30: Icon of Sin" },
+    { "31", "Level 31: Wolfenstein" },
+    { "32", "Level 32: Grosse" },
     { NULL, NULL }
 };
+
+static map_t tnt_wad_maps[] =
+{
+    { NULL, NULL }
+};
+
+static map_t plutonia_wad_maps[] =
+{
+    { NULL, NULL }
+};
+
+static map_t chex_wad_maps[] =
+{
+    { NULL, NULL }
+};
+
+static iwad_t iwads[] = 
+{
+    { "doom.wad",     "Doom",                                IWAD_DOOM },
+    { "doom2.wad",    "Doom 2",                              IWAD_DOOM2 },
+    { "tnt.wad",      "Final Doom: TNT: Evilution",          IWAD_TNT },
+    { "plutonia.wad", "Final Doom: The Plutonia Experiment", IWAD_PLUTONIA },
+    { "doom1.wad",    "Doom shareware",                      IWAD_DOOM1 },
+    { "chex.wad",     "Chex Quest",                          IWAD_CHEX },
+};
+
 
 // Array of IWADs found to be installed
 
@@ -178,7 +249,7 @@ map_t **L_Maps(int iwad_idx)
     switch(GetIWADForDescription(found_iwads[iwad_idx])->mask) {
         case IWAD_DOOM:
             maps = malloc(sizeof(map_t*) * arrlen(doom_wad_maps));
-            for(i=1;i<arrlen(doom_wad_maps);i++)
+            for(i=0;i<arrlen(doom_wad_maps);i++)
             {
                 maps[i] = &doom_wad_maps[i];
             }
@@ -206,7 +277,21 @@ map_t **L_Maps(int iwad_idx)
 
 char *MapToWarp(int map)
 {
-    return doom_wad_maps[map].warp;
+    switch(GetCurrentIWAD()->mask) {
+        case IWAD_DOOM:
+            return doom_wad_maps[map].warp;
+        case IWAD_DOOM1:
+            return doom1_wad_maps[map].warp;
+        case IWAD_DOOM2:
+            return doom2_wad_maps[map].warp;
+        case IWAD_TNT:
+            return tnt_wad_maps[map].warp;
+        case IWAD_PLUTONIA:
+            return plutonia_wad_maps[map].warp;
+        case IWAD_CHEX:
+            return chex_wad_maps[map].warp;
+    }
+    return NULL;
 }
 
 static void AddIWADParameter(execute_context_t *exec)
@@ -267,6 +352,7 @@ void L_Execute(launcher_t *data)
     if (data->map > 0)
     {
         AddCmdLineParameter(exec, "-warp %s", MapToWarp(data->map - 1));
+        printf("-warp %s\n", MapToWarp(data->map - 1));
     }
 
     //AddCmdLineParameter(exec, "-port %i", udpport);
